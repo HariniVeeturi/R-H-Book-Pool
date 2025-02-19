@@ -1,0 +1,95 @@
+body{
+    background-color:rgb(177,163,248);
+}
+body::after {
+    content: "";
+    position: fixed;
+    top: 250px;
+    right:-30px;
+    width: 500px; /* Adjust width */
+    height: 500px; /* Adjust height */
+    background: url('https://cdn3d.iconscout.com/3d/premium/thumb/successfully-login-3d-icon-download-in-png-blend-fbx-gltf-file-formats--done-approved-interface-pack-crime-security-icons-6559357.png?f=webp') no-repeat center;
+    background-size: cover;
+    opacity: 0.2; /* Adjust transparency */
+    transform: rotate(-15deg);
+    pointer-events: none; /* Prevent interaction */
+}
+img{
+    width: 100px;
+    height: 100px;
+    margin-left:140px;
+}
+form{
+    height: 520px;
+    width: 400px;
+    background-color: rgb(177, 177, 231);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    /* backdrop-filter: blur(10px); */
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+}
+form *{
+    font-family:serif;
+    color: #000000;
+    border: none;
+}
+form h3{
+    font-size: 32px;
+    font-weight:bold;
+    text-align: center;
+}
+
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 19px;
+    font-weight: bold;
+    font-family: serif;
+}
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background: #f1f1f1;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 17px;
+    font-weight: 300;
+}
+input:hover{
+    box-shadow: 0px 0px 4px 4px rgba(143, 129, 236, 0.44);
+}
+label{
+    font-weight: bold;
+    font-size: 19px;
+    font-family: serif;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.44);
+ }
+button{
+    margin-top: 50px;
+    width: 100%;
+    background-color: #3c3e3e;
+    color: white;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover{
+    box-shadow: 0px 0px 4px 4px rgba(143, 129, 236, 0.44);
+    transform: translateY(-2px);
+} 
+.card{
+    margin-top: 10px;
+    padding: 10px;
+    display:flex;
+    justify-content: space-between;
+
+}
