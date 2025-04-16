@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R&H Book Pool - Catalog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(185, 173, 247, 0.927);
+        }
+
+        header {
+            background: linear-gradient(
+                135deg,
+                rgba(230, 210, 250, 1),
+                rgba(255, 225, 215, 1),
+                rgba(210, 255, 255, 1)
+            );
+            color: rgba(109, 29, 175, 0.886);
+            text-align: center;
+            padding: 10px;
+        }
+
+        #search {
+            outline: none;
+            border-radius: 25px;
+            transition: all .5s ease-in-out;
+            background-color: #d7b8ef;
+        }
+
+        #search::placeholder {
+            color: black;
+        }
+
+        .catalog-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .book-card {
+            background-color: white;
+            margin: 15px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .book-card h3 {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .book-card p {
+            color: #555;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        .book-card .price {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .filter-container select,
+        .filter-container input {
+            padding: 5px;
+            font-size: 1em;
+        }
+
+        .wishlist-link {
+            text-align: right;
+            margin: 10px 20px;
+        }
+
+        .wishlist-link a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #7b4bb7;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .wishlist-link a:hover {
+            background-color: #5e3a95;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>R&H Book Pool Catalog</h1>
+    </header>
+
+    <!-- Wishlist Page Link -->
+    <div class="wishlist-link" style="margin-top:20px;">
+        <a href="wishlist.html">View Wishlist →</a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-container">
+        <input type="text" id="search" placeholder="Search by title..." onkeyup="filterCatalog()">
+        <select id="category" onchange="filterCatalog()">
+            <option value="">All Categories</option>
+            <option value="fiction">Fiction</option>
+            <option value="nonfiction">Non-Fiction</option>
+            <option value="science">Science</option>
+            <option value="technology">Technology</option>
+        </select>
+    </div>
+
+    <!-- Catalog Section -->
+    <div class="catalog-container" id="catalog">
+        <!-- Book Cards Will Be Injected Here -->
+    </div>
+
+    <div style="display: flex; justify-content: flex-end;">
+        <button style="padding: 5px; margin: 20px; border: none; border-radius: 5px;"><a style="text-decoration: none;" href="./index.html">Sign out</a></button>
+    </div>
+    <script>
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        const books = [
+            { id: 1, title: "The Great Gatsby", category: "fiction", image: "https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg", price: "$10.99", description: "A classic novel by F. Scott Fitzgerald.", author: "F. Scott Fitzgerald" },
+            { id: 2, title: "A Brief History of Time", category: "science", image: "https://m.media-amazon.com/images/I/91ebghaV-eL.jpg", price: "$15.99", description: "Stephen Hawking's bestselling book on cosmology.", author: "Stephen Hawking" },
+            { id: 3, title: "The Lean Startup", category: "technology", image: "https://m.media-amazon.com/images/I/71sxTeZIi6L._AC_UF1000,1000_QL80_.jpg", price: "$12.99", description: "Eric Ries' guide to building successful startups.", author: "Eric Ries" },
+            { id: 4, title: "Sapiens: A Brief History of Humankind", category: "nonfiction", image: "https://m.media-amazon.com/images/I/713jIoMO3UL.jpg", price: "$18.99", description: "Yuval Noah Harari's sweeping history of humankind.", author: "Yuval Noah Harari" },
+            { id: 5, title: "1984", category: "fiction", image: "https://m.media-amazon.com/images/I/715WdnBHqYL._UF1000,1000_QL80_.jpg", price: "$9.99", description: "George Orwell's dystopian novel.", author: "George Orwell" }
+        ];
+
+        function displayBooks(filteredBooks) {
+            const catalog = document.getElementById('catalog');
+            catalog.innerHTML = '';
+
+            filteredBooks.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <img src="${book.image}" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                    <p>${book.description}</p>
+                    <p class="price">${book.price}</p>
+                    <button onclick="addToWishlist(${book.id})">Add to Wishlist</button>
+                `;
+                catalog.appendChild(bookCard);
+            });
+        }
+
+        function addToWishlist(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (!wishlist.some(item => item.id === book.id)) {
+                wishlist.push(book);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert('Book added to wishlist!');
+            } else {
+                alert('Book is already in your wishlist.');
+            }
+        }
+
+        function filterCatalog() {
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('category').value;
+
+            const filteredBooks = books.filter(book => {
+                const matchesSearch = book.title.toLowerCase().includes(searchQuery);
+                const matchesCategory = category ? book.category === category : true;
+                return matchesSearch && matchesCategory;
+            });
+
+            displayBooks(filteredBooks);
+        }
+
+        // Initial Display
+        displayBooks(books);
+    </script>
+
+</body>
+
+</html>

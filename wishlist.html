@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Wishlist - R&H Book Pool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(
+                135deg,
+                rgba(230, 210, 250, 1),
+                rgba(255, 225, 215, 1),
+                rgba(210, 255, 255, 1)
+            );
+            color: #6d1daf;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .catalog-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .book-card {
+            background-color: white;
+            margin: 15px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .book-card h3 {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .book-card p {
+            color: #555;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        .book-card .price {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            background-color: #ff7b7b;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff4d4d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📚 Your Wishlist</h1>
+        <a href="catalog.html">← Back to Catalog</a>
+    </header>
+
+    <div class="catalog-container" id="wishlist-container">
+        <!-- Wishlist items will load here -->
+    </div>
+
+    <script>
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-container');
+            container.innerHTML = '';
+
+            if (wishlist.length === 0) {
+                container.innerHTML = '<p style="text-align:center;">Your wishlist is empty.</p>';
+                return;
+            }
+
+            wishlist.forEach(book => {
+                const item = document.createElement('div');
+                item.className = 'book-card';
+                item.innerHTML = `
+                    <img src="${book.image}" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                    <p><b>Author:</b> ${book.author}</p>
+                    <p class="price">${book.price}</p>
+                    <button onclick="removeFromWishlist(${book.id})">Mark as Read</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function removeFromWishlist(id) {
+            wishlist = wishlist.filter(book => book.id !== id);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            renderWishlist();
+        }
+
+        // Load wishlist on page load
+        renderWishlist();
+    </script>
+</body>
+
+</html>

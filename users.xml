@@ -1,0 +1,9 @@
+<users>
+  <user>
+    <username>JohnDoe</username>
+    <email>johndoe@example.com</email>
+    <phone>9876543210</phone>
+    <password>mypassword123</password>
+  </user>
+  <!-- More users can be added here -->
+</users>
